@@ -1,0 +1,82 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f7fa;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+}
+
+.status-columns {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.column {
+  flex: 1;
+  background: #ecf0f1;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.task {
+  background: white;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: grab;
+}
+
+.task.completed {
+  border-left: 4px solid #2ecc71;
+}
+
+.task.in-progress {
+  border-left: 4px solid #f39c12;
+}
+
+.task.pending {
+  border-left: 4px solid #e74c3c;
+}
+
+.techniques {
+  margin-top: 10px;
+}
+
+.technique {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.export-btn {
+  background-color: #16a085;
+  margin-top: 20px;
+}
+
