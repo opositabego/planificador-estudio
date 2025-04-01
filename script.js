@@ -1,10 +1,10 @@
+const e = React.createElement;
 
-document.addEventListener('DOMContentLoaded', function () {
-  const root = document.getElementById('root');
-  root.innerHTML = `
-    <div class='container'>
-      <h1>Planificador de Estudio</h1>
-      <p>App funcionando sin Babel, lista para GitHub Pages</p>
-    </div>
-  `;
-});
+function App() {
+  return e('div', { className: 'container' },
+    e('h1', null, 'Planificador de Estudio'),
+    e('p', null, 'App funcionando sin Babel, lista para GitHub Pages')
+  );
+}
+
+ReactDOM.render(e(App), document.getElementById('root'));
