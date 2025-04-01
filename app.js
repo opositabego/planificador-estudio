@@ -1,52 +1,67 @@
 
 const { useState } = React;
 
-const initialTasks = [
-  { id: 1, text: "Tema 1: Derechos fundamentales", status: "pending" },
-  { id: 2, text: "Tema 2: Procedimiento Administrativo", status: "pending" },
-];
+const initialTasks = {
+  pending: [
+    { id: 1, text: "Tema 1: Derechos fundamentales" },
+    { id: 2, text: "Tema 2: Procedimiento Administrativo" },
+  ],
+  "in-progress": [],
+  completed: []
+};
 
 function App() {
   const [tasks, setTasks] = useState(initialTasks);
 
-  function onDragStart(e, id) {
-    e.dataTransfer.setData("id", id);
-  }
+  const onDragStart = (e, fromCol, task) => {
+    e.dataTransfer.setData("fromCol", fromCol);
+    e.dataTransfer.setData("taskId", task.id);
+  };
 
-  function onDrop(e, status) {
-    const id = e.dataTransfer.getData("id");
-    const newTasks = tasks.map(task => {
-      if (task.id == id) task.status = status;
-      return task;
+  const onDrop = (e, toCol) => {
+    const fromCol = e.dataTransfer.getData("fromCol");
+    const taskId = parseInt(e.dataTransfer.getData("taskId"));
+
+    const task = tasks[fromCol].find(t => t.id === taskId);
+    const updatedFrom = tasks[fromCol].filter(t => t.id !== taskId);
+    const updatedTo = [...tasks[toCol], task];
+
+    setTasks({
+      ...tasks,
+      [fromCol]: updatedFrom,
+      [toCol]: updatedTo
     });
-    setTasks(newTasks);
-  }
+  };
 
-  function exportToExcel() {
-    const worksheet = XLSX.utils.json_to_sheet(tasks);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Plan");
-    XLSX.writeFile(workbook, "Plan_Estudio.xlsx");
-  }
+  const exportExcel = () => {
+    const data = [];
+    Object.keys(tasks).forEach(col => {
+      tasks[col].forEach(t => data.push({ Estado: col, Tarea: t.text }));
+    });
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Tareas");
+    XLSX.writeFile(wb, "Plan_Estudio.xlsx");
+  };
 
   return (
     <div className="container">
       <h1>Planificador de Estudio</h1>
-      <div style={{ display: "flex", gap: "20px" }}>
-        {["pending", "in-progress", "completed"].map(status => (
+      <div className="columns">
+        {Object.keys(tasks).map(col => (
           <div
-            key={status}
-            onDrop={e => onDrop(e, status)}
+            key={col}
+            className="column"
             onDragOver={e => e.preventDefault()}
-            style={{ flex: 1, minHeight: "200px", background: "#ecf0f1", padding: "10px" }}
+            onDrop={e => onDrop(e, col)}
           >
-            <h3>{status}</h3>
-            {tasks.filter(t => t.status === status).map(task => (
+            <h3>{col}</h3>
+            {tasks[col].map(task => (
               <div
                 key={task.id}
+                className="task"
                 draggable
-                onDragStart={e => onDragStart(e, task.id)}
-                style={{ background: "white", margin: "5px", padding: "10px", borderRadius: "5px" }}
+                onDragStart={e => onDragStart(e, col, task)}
               >
                 {task.text}
               </div>
@@ -54,9 +69,9 @@ function App() {
           </div>
         ))}
       </div>
-      <button onClick={exportToExcel} style={{ marginTop: "20px" }}>Exportar a Excel</button>
+      <button className="export-btn" onClick={exportExcel}>Exportar a Excel</button>
     </div>
   );
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById("root"));

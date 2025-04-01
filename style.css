@@ -1,22 +1,43 @@
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
   background: #f5f7fa;
+  padding: 20px;
+  color: #333;
 }
 .container {
   background: white;
   border-radius: 10px;
-  padding: 20px;
-  max-width: 1000px;
-  margin: auto;
+  padding: 25px;
+  max-width: 1100px;
+  margin: 0 auto;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
 }
-button {
-  background-color: #3498db;
+.columns {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.column {
+  background: #ecf0f1;
+  padding: 10px;
+  flex: 1;
+  min-height: 200px;
+  border-radius: 8px;
+}
+.task {
+  background: white;
+  margin: 5px 0;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: grab;
+}
+.export-btn {
+  margin-top: 20px;
+  background-color: #16a085;
   color: white;
   border: none;
-  padding: 8px 12px;
+  padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
 }
